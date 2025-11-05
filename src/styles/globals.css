@@ -1,0 +1,65 @@
+/* ==== CSS VARIABLES (Light Mode Default) ==== */
+:root {
+  /* Breakpoints (same as Tailwind) */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* Colors */
+  --color-bg: #ffffff;
+  --color-text: #1f2937;
+  /* Gray-800 */
+  --color-primary: #2563eb;
+  /* Blue-600 */
+  --color-secondary: #6b7280;
+  /* Gray-500 */
+  --color-accent: #f59e0b;
+  /* Amber-500 */
+
+  /* Spacing scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
+  /* Fonts */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Fira Code', ui-monospace, SFMono-Regular, monospace;
+  --font-arial: Arial, Helvetica, sans-serif;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-medium: 300ms ease-in-out;
+}
+
+/* ==== BASE STYLES ==== */
+body {
+  @apply bg-[var(--color-bg)] text-[var(--color-text)] transition-colors duration-300 font-[var(--font-arial)];
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-semibold leading-tight;
+}
+
+/* Reusable container */
+.container {
+  @apply mx-auto px-4;
+  max-width: var(--breakpoint-xl);
+}
+
+.gradient-text {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-500;
+}
