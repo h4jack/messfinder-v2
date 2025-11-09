@@ -92,7 +92,6 @@
 }
 
 .bg-line-pattern {
-  @apply bg-teal-500 relative overflow-hidden;
   background-image: 
     repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.2) 40px, rgba(255,255,255,0.2) 41px),
     repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(255,255,255,0.1) 40px, rgba(255,255,255,0.1) 41px);

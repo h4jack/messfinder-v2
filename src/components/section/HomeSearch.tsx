@@ -5,6 +5,13 @@ import { X, Search, MapPin, Clock, ChevronDown, Fullscreen, Minimize2 } from 'lu
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import pincodeLookup from '@/utils/pincodeLookup';
+import { RoomCard, RoomCardProps } from './FeaturedRooms';
+
+// Import your images
+import room1 from '@/assets/rooms/room1.png';
+import room2 from '@/assets/rooms/room2.png';
+import room3 from '@/assets/rooms/room3.png';
+
 
 interface Suggestion {
   type: 'mess' | 'location' | 'history';
@@ -238,24 +245,56 @@ export default function HomeSearch() {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
+
+  const rooms: RoomCardProps[] = [
+    {
+      name: 'Cozy Room in Bandra',
+      location: 'Bandra West, Mumbai',
+      price: '₹8,500',
+      owner: 'Rahul Sharma',
+      postedDate: '2 days ago',
+      shared: true,
+      suitableFor: ['students', 'working professionals', 'paying guests'],
+      image: room1,
+    },
+    {
+      name: 'Premium Studio Andheri',
+      location: 'Andheri East',
+      price: undefined, // → shows "Call to Know"
+      owner: 'Priya Mehta',
+      postedDate: '1 week ago',
+      shared: false,
+      suitableFor: ['working professionals', 'temporary stay'],
+      image: room2,
+    },
+    {
+      name: 'Girls PG Kharghar',
+      location: 'Kharghar, Navi Mumbai',
+      price: '₹6,000',
+      owner: 'Anita Desai',
+      postedDate: '3 days ago',
+      shared: true,
+      suitableFor: ['students', 'paying guests'],
+      image: room3,
+    },
+  ];
+
   return (
-    <div className={`${showFullScreen ? "fixed inset-0 z-50 bg-white" : "container overflow-hidden relative"}`}>
+    <div className={`${showFullScreen ? "fixed inset-0 z-50 bg-white" : "container relative"}`}>
       <section
         ref={containerRef}
         className={`
           mx-auto p-5 md:p-8 bg-line-pattern text-white
-          transition-all duration-500 ease-out overflow-visible relativee
-          ${showFullScreen ? "justify-start rounded-none" : "container justify-center rounded-2xl"} flex flex-col items-center gap-4 md:gap-8 h-full w-full
-          before:absolute before:inset-0 before:rounded-2xl before:pointer-events-none
-          before:bg-gradient-to-r before:from-transparent before:via-white/5 before:to-transparent
-          before:bg-[length:200%_100%] before:animate-shine overflow-y-visible relative
+          transition-all duration-500 ease-out
+          relative
+          ${showFullScreen ? "bg-gray-700 justify-start rounded-none h-screen overflow-scroll" : "overflow-hidden container bg-teal-600 justify-center rounded-2xl"} flex flex-col items-center gap-4 md:gap-8 w-full
         `}
         style={{ '--mouse-x': '0px', '--mouse-y': '0px' } as any}
       >
         <button
           type="button"
           onClick={() => setShowFullScreen(prev => !prev)}
-          className="absolute right-2 top-2 z-10 p-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30"
+          className="absolute right-0 top-0 z-60 p-2 m-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30"
           aria-label={showFullScreen ? 'Exit fullscreen' : 'Enter fullscreen'}
         >
           {showFullScreen ? (
@@ -266,7 +305,7 @@ export default function HomeSearch() {
         </button>
         {/* Logo */}
         {showFullScreen && (
-          <div className="absolute top-0 left-0 p-2 px-4">
+          <div className="fixed left-0 top-0 p-2 px-4 z-50">
             <Link href="/" className="flex items-center gap-2 group">
               <span className="text-2xl font-bold text-teal-50 group-hover:text-teal-600 transition-colors">
                 MessFinder
@@ -493,6 +532,18 @@ export default function HomeSearch() {
             </div>
           </form>
         </div>
+        {showFullScreen &&
+          <div className="container mx-auto px-4 max-w-7xl">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 text-left text-center mb-10">
+              Featured Rooms
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {rooms.map((room, i) => (
+                <RoomCard key={i} {...room} />
+              ))}
+            </div>
+          </div>
+        }
       </section>
     </div >
   );
