@@ -43,3 +43,6 @@ next-env.d.ts
 
 # lock files
 *.lock
+
+#note file, which included information of files and plannings.. that has nothing to do with the project directly, should not be committed.
+note/*
