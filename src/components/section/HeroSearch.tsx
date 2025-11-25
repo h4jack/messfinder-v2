@@ -13,6 +13,10 @@ import ClickOutside from '../ClickedOutside';
 export default function HeroSearch() {
     // Fixed: Initialize ref with null
     const searchRef = useRef<HTMLDivElement>(null);
+    const stateRef = useRef<HTMLDivElement>(null);
+    const distRef = useRef<HTMLDivElement>(null);
+    const [showStateSuggestions, setShowStateSuggestions] = useState(false);
+    const [showDistrictSuggestions, setShowDistrictSuggestions] = useState(false);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [searchText, setSearchText] = useState('');
     const [isFilter, setIsFilter] = useState(true);
@@ -23,6 +27,8 @@ export default function HeroSearch() {
     const districtSuggestions = ['Durgapur', 'Asansol', 'Kolkata', 'Siliguri', 'Darjeeling', 'Howrah'];
     const [pincode, setPincode] = useState('');
 
+    const [selectedState, setSelectedState] = useState<string | null>(null);
+    const [selectedDist, setSelectedDist] = useState<string | null>(null);
     return (
         <div className='bg-gradient-to-br from-teal-600 to-cyan-700'>
             <div className="bg-line-pattern bg-transparent w-full text-white">
@@ -77,49 +83,52 @@ export default function HeroSearch() {
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                    <div>
+                                    <div ref={stateRef}>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
                                         <button
                                             className="group w-full h-12 px-4 bg-teal-50/30 border border-teal-900/40 rounded-xl flex items-center justify-between hover:bg-teal-50/10 focus:outline-none focus:ring-2 focus:ring-teal-900/70 focus:border-transparent transition-all"
                                             tabIndex={0}
+                                            onClick={() => setShowStateSuggestions(prev => !prev)}
                                         >
-                                            <span className="text-gray-700">Select State</span>
+                                            <span className="text-gray-700">{selectedState || "Select State"}</span>
                                             <ChevronDown className="w-4 h-4 text-gray-500 group-focus:text-teal-700 transition-colors" />
                                         </button>
                                     </div>
 
-                                    <div>
+                                    <div ref={distRef}>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">District</label>
                                         <button
                                             className="group w-full h-12 px-4 bg-teal-50/30 border border-teal-900/40 rounded-xl flex items-center justify-between hover:bg-teal-50/10 focus:outline-none focus:ring-2 focus:ring-teal-900/70 focus:border-transparent transition-all"
                                             tabIndex={0}
+                                            onClick={() => setShowDistrictSuggestions(prev => !prev)}
                                         >
-                                            <span className="text-gray-700">Select District</span>
+                                            <span className="text-gray-700">{selectedDist || "Select District"}</span>
                                             <ChevronDown className="w-4 h-4 text-gray-500 group-focus:text-teal-700 transition-colors" />
                                         </button>
                                     </div>
 
-                                    <ClickOutside onClickOutside={() => setShowPincodeSuggestions(false)}>
-                                        <div ref={pincodeRef}>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">Pincode</label>
-                                            <div className="relative">
-                                                <input
-                                                    type="text"
-                                                    value={pincode}
-                                                    placeholder="e.g. 713201, 713216"
-                                                    className="w-full h-12 pl-4 pr-10 bg-teal-50/30 border border-teal-900/40 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-900/70 focus:border-transparent transition-all"
-                                                    onChange={(e) => {
-                                                        setPincode(e?.target.value || "");
-                                                        setShowPincodeSuggestions(true);
-                                                    }}
-                                                    onFocus={(e) => e.target.value.trim() && setShowPincodeSuggestions(true)}
-                                                />
-                                                <button onClick={() => { setPincode(""); setShowPincodeSuggestions(false) }} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
-                                                    <X className="w-5 h-5" />
-                                                </button>
-                                            </div>
+                                    {/* <ClickOutside onClickOutside={() => setShowPincodeSuggestions(false)}> */}
+                                    <div ref={pincodeRef}>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Pincode</label>
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                value={pincode}
+                                                placeholder="e.g. 713201, 713216"
+                                                className="w-full h-12 pl-4 pr-10 bg-teal-50/30 border border-teal-900/40 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-900/70 focus:border-transparent transition-all"
+                                                onChange={(e) => {
+                                                    setPincode(e?.target.value || "");
+                                                    setShowPincodeSuggestions(true);
+                                                }}
+                                                onFocus={(e) => e.target.value.trim() && setShowPincodeSuggestions(true)}
+                                            />
+                                            <button onClick={() => { setPincode(""); setShowPincodeSuggestions(false) }} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                                <X className="w-5 h-5" />
+                                            </button>
                                         </div>
-                                    </ClickOutside>
+                                    </div>
+
+                                    {/* </ClickOutside> */}
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">For</label>
                                         <div className="flex gap-1">
@@ -136,9 +145,25 @@ export default function HeroSearch() {
                                             ))}
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
+
                         }
+                        <CustomDropdown targetRef={pincodeRef} visible={showPincodeSuggestions}>
+                            {pincodeSuggestions.map((keyword, index) => (
+                                <div
+                                    key={index}
+                                    className="px-4 py-4 hover:bg-black/10 rounded-sm hover:text-white cursor-pointer whitespace-nowrap"
+                                    onClick={() => {
+                                        setPincode(keyword)
+                                        setShowPincodeSuggestions(false);
+                                    }}
+                                >
+                                    {keyword}
+                                </div>
+                            ))}
+                        </CustomDropdown>
                     </div>
                 </section >
                 <CustomDropdown targetRef={searchRef} visible={showSuggestions}>
@@ -146,26 +171,45 @@ export default function HeroSearch() {
                         <div
                             key={index}
                             className="px-4 py-4 hover:bg-black/10 rounded-sm hover:text-white cursor-pointer whitespace-nowrap"
-                            onClick={
-                                () => {
-                                    console.log("hello world")
-                                }
-                            }
+                            onClick={() => console.log("hello search")}
                         >
                             {keyword}
                         </div>
                     ))}
                 </CustomDropdown>
-                <CustomDropdown targetRef={pincodeRef} visible={showPincodeSuggestions}>
-                    {pincodeSuggestions.map((keyword, index) => (
+
+                <CustomDropdown targetRef={stateRef} visible={showStateSuggestions}>
+                    {stateSuggestions.map((keyword, index) => (
                         <div
                             key={index}
                             className="px-4 py-4 hover:bg-black/10 rounded-sm hover:text-white cursor-pointer whitespace-nowrap"
+                            onClick={() => {
+                                setSelectedState(keyword)
+                                setShowStateSuggestions(false);
+                            }}
                         >
                             {keyword}
                         </div>
                     ))}
                 </CustomDropdown>
+
+                <CustomDropdown targetRef={distRef} visible={showDistrictSuggestions}>
+                    {districtSuggestions.map((keyword, index) => (
+                        <div
+                            key={index}
+                            className="px-4 py-4 hover:bg-black/10 rounded-sm hover:text-white cursor-pointer whitespace-nowrap"
+                            onClick={() => {
+                                setSelectedDist(keyword)
+                                setShowDistrictSuggestions(false);
+                            }}
+                        >
+                            {keyword}
+                        </div>
+                    ))}
+                </CustomDropdown>
+
+
+
             </div >
         </div >
     );
