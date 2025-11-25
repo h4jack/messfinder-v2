@@ -9,6 +9,7 @@ import { MobileMenuContent } from './MobileMenuContent';
 import type { User } from '@/types/User';
 // @ts-ignore
 import './header.css';
+import Logo from '@/components/logo/Logo';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mock user — toggle `isLoggedIn` to test guest vs logged-in
@@ -46,15 +47,13 @@ export default function Header() {
         className={`w-full ${isMobileMenuOpen
           ? 'bg-teal-50'
           : 'bg-gradient-to-b from-teal-50/50 to-transparent backdrop-blur-sm'
-          } sticky top-0 z-50`}
+          } sticky top-0 z-[500]`}
       >
         <header className="container mx-auto flex justify-between items-center p-3 md:p-4 h-16">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2 group">
-              <span className="text-2xl font-bold text-teal-700 group-hover:text-teal-600 transition-colors">
-                MessFinder
-              </span>
+              <Logo />
             </Link>
           </div>
 

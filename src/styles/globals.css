@@ -60,6 +60,6 @@ h6 {
   max-width: var(--breakpoint-xl);
 }
 
-.gradient-text {
-  @apply text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-500;
+.logo-gradient {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-teal-700 to-green-600;
 }

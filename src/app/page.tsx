@@ -1,12 +1,12 @@
 import { Header } from "@/components/layout";
-import HomeSearch from "@/components/section/HomeSearch";
-import FeaturedRooms from "@/components/section/FeaturedRooms";
-import WhyChooseUs from "@/components/section/WhyUs";
-import PopularLocalities from "@/components/section/PopularLocalities";
-import Testimonials from "@/components/section/Testimonials";
-import CTA from "@/components/section/CTA";
-import { HeroSearch } from "@/components/section/HeroSection";
-import HowItWorks from "@/components/section/HowItWorks";
+import HeroSearch from "@/components/section/HeroSearch";
+
+// import FeaturedRooms from "@/components/section/FeaturedRooms";
+// import WhyChooseUs from "@/components/section/WhyUs";
+// import PopularLocalities from "@/components/section/PopularLocalities";
+// import Testimonials from "@/components/section/Testimonials";
+// import CTA from "@/components/section/CTA";
+// import HowItWorks from "@/components/section/HowItWorks";;
 
 
 export default function Home() {
@@ -14,15 +14,14 @@ export default function Home() {
     <>
       <div className="bg-gradient-to-br from-teal-50 to-white min-h-screen">
         <Header />
-        <HomeSearch />
-        <FeaturedRooms />
-        
         <HeroSearch />
+
+        {/* <FeaturedRooms />
         <HowItWorks />
         <PopularLocalities />
         <WhyChooseUs />
         <Testimonials />
-        <CTA />
+        <CTA /> */}
         
         {/*
         What else you should include in the home page..
