@@ -1,5 +1,6 @@
 /* ====== CUSTOM UTILITIES ====== */
 @layer utilities {
+
   /* ====== FLEX & LAYOUT ====== */
   ._flex-center {
     @apply flex justify-center items-center;
@@ -92,16 +93,16 @@
 }
 
 .bg-line-pattern {
-  background-image: 
-    repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.2) 40px, rgba(255,255,255,0.2) 41px),
-    repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(255,255,255,0.1) 40px, rgba(255,255,255,0.1) 41px);
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255, 255, 255, 0.2) 40px, rgba(255, 255, 255, 0.2) 41px),
+    repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(255, 255, 255, 0.1) 40px, rgba(255, 255, 255, 0.1) 41px);
 }
 
 .bg-line-pattern::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.1) 0%, transparent 30%);
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.1) 0%, transparent 30%);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -127,12 +128,15 @@
   overflow: hidden;
   transition: max-height 0.5s ease-out, opacity 0.4s ease-out;
 }
+
 .expand-panel[aria-expanded="false"] {
   max-height: 0;
   opacity: 0;
 }
+
 .expand-panel[aria-expanded="true"] {
-  max-height: 500px;   /* any value larger than the panel height */
+  max-height: 500px;
+  /* any value larger than the panel height */
   opacity: 1;
 }
 
@@ -142,46 +146,88 @@
     opacity: 0;
     transform: translateY(-12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 .fade-slide-in {
   animation: fadeSlideIn 0.4s ease-out forwards;
 }
 
 /* 3. Shine effect (the moving gradient you already had) */
 @keyframes shine {
-  0%   { background-position: -200% center; }
-  100% { background-position:  200% center; }
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
 }
+
 .shine {
   position: relative;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,0.05),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent);
   background-size: 200% 100%;
   animation: shine 3s linear infinite;
 }
 
 /* 4. Suggestions dropdown slide-in */
 @keyframes slideInDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .suggestions {
   animation: slideInDown 0.2s ease-out forwards;
 }
 
 /* 5. Error message fade-in */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
+
 .error-msg {
   animation: fadeIn 0.25s ease-out forwards;
+}
+
+.filter-panel {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: transform 0.3s ease, max-height 0.3s ease, opacity 0.3s ease;
+    transform: translateY(-100px) rotate(10deg);
+    z-index: 10;
+    
+}
+
+.filter-panel.expanded {
+    max-height: 600px; /* adjust to your content */
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.filter-panel.closing {
+    max-height: 0;
+    transform: translateY(-100px) rotate(-10deg);
+    opacity: 0;
 }
