@@ -16,12 +16,19 @@ interface Filters {
 }
 
 
-
-const renderDropdownItem = (item: string, onClick: () => void) => (
+const renderDropdownItem = (
+    item: string,
+    onClick: () => void,
+    extraProps?: React.HTMLAttributes<HTMLDivElement>
+) => (
     <div
         key={item || 'empty'}
-        className="px-4 py-4 hover:bg-black/10 rounded-sm hover:text-white cursor-pointer whitespace-nowrap"
-        onMouseDown={onClick}
+        className="px-4 py-4 cursor-pointer whitespace-nowrap"
+        onMouseDown={(e) => {
+            e.preventDefault(); // prevent input blur
+            onClick();
+        }}
+        {...extraProps}
     >
         {item || "Select"}
     </div>
@@ -99,10 +106,7 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
                             <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
                             <button
                                 className={`group w-full h-12 px-4 bg-teal-50/30 rounded-xl flex items-center justify-between hover:bg-teal-50/10 focus:outline-none focus:ring-2 transition-all ${getInputClasses('state')}`}
-                                onClick={() => {
-                                    stateDropdown.toggle();
-                                    console.log("Hello")
-                                }}>
+                                onClick={stateDropdown.toggle}>
                                 {filters.state || 'Select State'}
                                 <ChevronDown className="w-4 h-4 text-gray-500 group-focus:text-teal-700" />
                             </button>
@@ -253,7 +257,7 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
             {
                 pincodeDropdown.open && (
                     <pincodeDropdown.DropdownWrapper>
-                        <CustomDropdown targetRef={pincodeDropdown.ref} visible={pincodeDropdown.open}>
+                        <CustomDropdown targetRef={pincodeDropdown.ref} visible={pincodeDropdown.open} enableTypeAhead={false}>
                             {pincodeList.map((s) => (
                                 renderDropdownItem(s, () => {
                                     setFilters((prev) => ({ ...prev, pincode: s }));

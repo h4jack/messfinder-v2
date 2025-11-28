@@ -154,7 +154,7 @@ export default function HeroSearch() {
                 {
                     searchDropdown.open && (
                         <searchDropdown.DropdownWrapper>
-                            <CustomDropdown targetRef={searchDropdown.ref} visible={searchDropdown.open}>
+                            <CustomDropdown targetRef={searchDropdown.ref} visible={searchDropdown.open} enableTypeAhead={false}>
                                 {durgapurSearchKeywords.map((keyword) => (
                                     renderDropdownItem(keyword, () => {
                                         setSearchText(keyword);
