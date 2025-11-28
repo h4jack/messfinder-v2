@@ -5,7 +5,7 @@ import { useRef, useState, useCallback, useEffect, useId } from 'react';
 import ClickOutside from '@/components/ClickedOutside';
 
 interface UseDropdownReturn {
-    ref: React.RefObject<HTMLElement> | null;  // ← HTMLElement, not HTMLDivElement
+    ref: React.RefObject<HTMLElement | undefined>;  // ← HTMLElement, not HTMLDivElement
     open: boolean;
     toggle: (isOpen?: boolean) => void;
     openDropdown: () => void;
@@ -17,7 +17,7 @@ export type { UseDropdownReturn };
 
 export function useDropdown() {
     // ← Use HTMLElement (div, button, input — all work)
-    const ref = useRef<HTMLElement>(null);
+    const ref = useRef<HTMLElement | undefined>(undefined);
     const [open, setOpen] = useState(false);
 
     const toggle = useCallback((isOpen?: boolean) => {

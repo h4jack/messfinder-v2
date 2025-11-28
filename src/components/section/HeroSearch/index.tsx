@@ -79,7 +79,7 @@ export default function HeroSearch() {
                     <div className="w-full h-full md:w-2/3 mx-4 mt-6">
                         <searchDropdown.DropdownWrapper>
                             <div
-                                ref={searchDropdown.ref}
+                                ref={searchDropdown.ref as React.RefObject<HTMLDivElement>}
                                 className={`bg-white/80 z-20 backdrop-blur-sm p-4 w-full rounded-lg shadow-md text-gray-700 flex flex-col sm:flex-row items-end justify-center sm:items-center gap-2 relative transition-all
         ${searchErrors ? 'border-2 border-red-500' : 'border-0'}`}
                             >

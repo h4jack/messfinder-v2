@@ -12,7 +12,7 @@ import { createPortal } from 'react-dom';
 
 interface CustomDropdownProps {
     children: React.ReactNode;
-    targetRef: React.RefObject<HTMLElement>;  // ← same type
+    targetRef: React.RefObject<HTMLElement | undefined>;  // ← same type
     visible: boolean;
     onSelect?: (value: string) => void;
     enableTypeAhead?: boolean;

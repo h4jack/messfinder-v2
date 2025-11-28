@@ -6,7 +6,7 @@ interface ClickOutsideProps {
   children: ReactNode;
   onClickOutside: () => void;
   className?: string;
-  excludeRefs?: React.RefObject<HTMLElement>[];
+  excludeRefs?: React.RefObject<HTMLElement | undefined>[];
 }
 
 const ClickOutside: React.FC<ClickOutsideProps> = ({
