@@ -4,36 +4,17 @@ import React, { useState } from 'react';
 
 import { X, ChevronDown, Filter } from 'lucide-react';
 
-import { CustomDropdown } from '@/components/form/CustomDropdown';
-import { useDropdown } from '@/components/useDropdown';
-import pincodeLookup from '@/utils/pincodeLookup';
+import { CustomDropdown } from '@/components/ui/dropdown/CustomDropdown';
+import { useDropdown } from '@/components/ui/dropdown/useDropdown';
+import { DropdownItem } from '@/components/ui/dropdown/DropdownItem';
 
+import pincodeLookup from '@/utils/pincodeLookup';
 interface Filters {
     state: string;
     district: string;
     pincode: string;
     gender: 'All' | 'Male' | 'Female';
 }
-
-
-const renderDropdownItem = (
-    item: string,
-    onClick: () => void,
-    extraProps?: React.HTMLAttributes<HTMLDivElement>
-) => (
-    <div
-        key={item || 'empty'}
-        className="px-4 py-4 cursor-pointer whitespace-nowrap"
-        onMouseDown={(e) => {
-            e.preventDefault(); // prevent input blur
-            onClick();
-        }}
-        {...extraProps}
-    >
-        {item || "Select"}
-    </div>
-);
-
 interface FilterBoxProps {
     filtersExpanded: boolean;
 }
@@ -172,6 +153,7 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
 
                                         pincode ? pincodeDropdown.openDropdown() : pincodeDropdown.closeDropdown();
                                     }}
+                                    onMouseDown={(e) => e.currentTarget.value.trim() && pincodeDropdown.openDropdown()}
                                 />
 
                                 {filters.pincode.length > 0 && (
@@ -223,7 +205,7 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
                     <stateDropdown.DropdownWrapper>
                         <CustomDropdown targetRef={stateDropdown.ref} visible={stateDropdown.open}>
                             {["", ...pincodeLookup.getAllStates()].map((s) => (
-                                renderDropdownItem(s || "Select State", () => {
+                                DropdownItem(s || "Select State", () => {
                                     setFilters((prev) => {
                                         if (prev.state !== s) {
                                             // Reset district if state changes
@@ -244,7 +226,7 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
                     <districtDropdown.DropdownWrapper>
                         <CustomDropdown targetRef={districtDropdown.ref} visible={districtDropdown.open}>
                             {["", ...pincodeLookup.getDistrictsByState(filters.state)].map((s) => (
-                                renderDropdownItem(s || "Select District", () => {
+                                DropdownItem(s || "Select District", () => {
                                     setFilters((prev) => ({ ...prev, district: s }));
                                     districtDropdown.closeDropdown();
                                 })
@@ -259,7 +241,7 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
                     <pincodeDropdown.DropdownWrapper>
                         <CustomDropdown targetRef={pincodeDropdown.ref} visible={pincodeDropdown.open} enableTypeAhead={false}>
                             {pincodeList.map((s) => (
-                                renderDropdownItem(s, () => {
+                                DropdownItem(s, () => {
                                     setFilters((prev) => ({ ...prev, pincode: s }));
                                     pincodeDropdown.closeDropdown();
                                 })

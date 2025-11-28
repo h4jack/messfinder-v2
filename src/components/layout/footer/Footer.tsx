@@ -32,8 +32,8 @@ const Footer = () => {
                 {/* Quick Links */}
                 <FooterSection title="Quick Links">
                     <div className="grid grid-cols-2 gap-2">
-                        {pageLinks.map((link, index) => (
-                            <FooterLink key={index} href={link.href} name={link.name} />
+                        {allPageLinks.map((link, index) => (
+                            <FooterLink key={index} href={link.href} name={link.label} />
                         ))}
                     </div>
                 </FooterSection>

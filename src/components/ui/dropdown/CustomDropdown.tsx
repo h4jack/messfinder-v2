@@ -25,8 +25,8 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
     onSelect,
     enableTypeAhead = true, // default: on
 }) => {
-    const dropdownRef = useRef<HTMLDivElement>(null);
-    const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const dropdownRef = useRef<HTMLDivElement | undefined>(null);
+    const itemRefs = useRef<(HTMLDivElement | undefined)[]>([]);
     const [focusedIndex, setFocusedIndex] = useState(-1);
     const searchQuery = useRef('');
     const searchTimeout = useRef<NodeJS.Timeout | null>(null);

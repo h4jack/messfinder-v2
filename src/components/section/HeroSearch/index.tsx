@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 
-import { X, Search, MapPin, Filter } from 'lucide-react';
+import { X, Search, MapPin, Filter, Fullscreen, Minimize2 } from 'lucide-react';
 
 import { durgapurSearchKeywords } from '@/data/mockData';
-import { CustomDropdown } from '@/components/form/CustomDropdown';
-import { useDropdown } from '@/components/useDropdown';
+import { CustomDropdown } from '@/components/ui/dropdown/CustomDropdown';
+import { useDropdown } from '@/components/ui/dropdown/useDropdown';
+import { DropdownItem } from '@/components/ui/dropdown/DropdownItem';
 
 import FilterBox from './FilterBox';
 
@@ -59,11 +60,19 @@ export default function HeroSearch() {
 
     const [searchErrors, setSearchErrors] = useState("");
 
+    const [fullScreen, setFullScreen] = useState(true);
 
     return (
-        <div className='bg-gradient-to-br from-teal-600 to-cyan-700'>
-            <div className="bg-line-pattern bg-transparent w-full text-white">
-
+        <div className={"bg-gradient-to-br " + (fullScreen
+            ? "from-teal-900 to-cyan-900 fixed h-screen overflow-auto z-1000 w-full top-0 left-0"
+            : "from-teal-600 to-cyan-600 relative")}>
+            <div className="bg-line-pattern bg-transparent w-full text-white h-full">
+                <button
+                    className="absolute top-4 right-4 z-30 bg-white/20 hover:bg-white/30 text-white p-2 rounded-md transition-all"
+                    onClick={() => setFullScreen(!fullScreen)}
+                >
+                    {fullScreen ? <Minimize2 className="w-6 h-6" /> : <Fullscreen className="w-6 h-6" />}
+                </button>
                 {/* ---------------- Header Section ---------------- */}
                 <section className="container py-20 p-2 flex flex-col items-center justify-center mx-auto">
                     <div className="m-4 text-center w-full gap-2">
@@ -104,7 +113,7 @@ export default function HeroSearch() {
 
                                             e.target.value.trim() ? searchDropdown.openDropdown() : searchDropdown.closeDropdown();
                                         }}
-                                        onFocus={(e) => e.currentTarget.value.trim() && searchDropdown.openDropdown()}
+                                        onMouseDown={(e) => e.currentTarget.value.trim() && searchDropdown.openDropdown()}
                                     />
 
                                     {searchText && (
@@ -156,7 +165,7 @@ export default function HeroSearch() {
                         <searchDropdown.DropdownWrapper>
                             <CustomDropdown targetRef={searchDropdown.ref} visible={searchDropdown.open} enableTypeAhead={false}>
                                 {durgapurSearchKeywords.map((keyword) => (
-                                    renderDropdownItem(keyword, () => {
+                                    DropdownItem(keyword, () => {
                                         setSearchText(keyword);
                                         searchDropdown.closeDropdown();
                                     })
