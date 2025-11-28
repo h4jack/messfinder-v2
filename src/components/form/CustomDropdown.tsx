@@ -1,4 +1,8 @@
-import { useLayoutEffect, useRef } from 'react';
+'use client';
+
+import { useLayoutEffect, useRef, ReactNode } from 'react';
+import { createPortal } from 'react-dom';
+
 
 export function CustomDropdown({ children, targetRef, visible }: DropdownProps) {
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -11,20 +15,21 @@ export function CustomDropdown({ children, targetRef, visible }: DropdownProps) 
 
         const updatePosition = () => {
             const rect = trigger.getBoundingClientRect();
-            const dropdownHeight = dropdown.offsetHeight || 200; // fallback
+            const dropdownHeight = dropdown.offsetHeight || 200;
             const spaceBelow = window.innerHeight - rect.bottom;
             const spaceAbove = rect.top;
 
             dropdown.style.position = 'fixed';
             dropdown.style.left = `${rect.left}px`;
             dropdown.style.width = `${rect.width}px`;
-            dropdown.style.zIndex = '1000';
+            dropdown.style.zIndex = '2147483647'; // max z-index
 
-            // AUTO-FLIP: Show above if not enough space below
             if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
-                dropdown.style.bottom = `${window.innerHeight - rect.top + 8}px`;
+                // Flip to top
                 dropdown.style.top = 'auto';
+                dropdown.style.bottom = `${window.innerHeight - rect.top + 8}px`;
             } else {
+                // Normal: below
                 dropdown.style.top = `${rect.bottom + 8}px`;
                 dropdown.style.bottom = 'auto';
             }
@@ -32,31 +37,33 @@ export function CustomDropdown({ children, targetRef, visible }: DropdownProps) 
 
         updatePosition();
 
-        const handleScroll = () => updatePosition();
-        window.addEventListener('scroll', handleScroll, true);
-        window.addEventListener('resize', handleScroll);
+        const handleUpdate = () => updatePosition();
+        window.addEventListener('scroll', handleUpdate, true);
+        window.addEventListener('resize', handleUpdate);
 
         return () => {
-            window.removeEventListener('scroll', handleScroll, true);
-            window.removeEventListener('resize', handleScroll);
+            window.removeEventListener('scroll', handleUpdate, true);
+            window.removeEventListener('resize', handleUpdate);
         };
-    }, [visible, targetRef, children]); // Add children to deps
+    }, [visible, targetRef]);
 
     if (!visible) return null;
 
-    return (
+    // This is the magic: portal directly to body
+    const dropdownElement = (
         <div
             ref={dropdownRef}
+            className="bg-teal-900/60 text-white backdrop-blur-xl border border-white/30 rounded-xl shadow-2xl p-1 max-h-80 overflow-y-auto pointer-events-auto"
             style={{
                 position: 'fixed',
                 top: 0,
                 left: 0,
-                pointerEvents: 'auto',
             }}
-            className="bg-teal-900/40 z-50 backdrop-blur-xl border border-white/30 rounded-xl shadow-2xl p-1 max-h-80 overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
         >
             {children}
         </div>
     );
-};
+
+    return createPortal(dropdownElement, document.body);
+}
