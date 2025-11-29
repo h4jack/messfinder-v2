@@ -1,7 +1,7 @@
 import { Header } from "@/components/layout";
 import HeroSearch from "@/components/section/HeroSearch";
 
-// import FeaturedRooms from "@/components/section/FeaturedRooms";
+import FeaturedRooms from "@/components/section/FeaturedRooms";
 // import WhyChooseUs from "@/components/section/WhyUs";
 // import PopularLocalities from "@/components/section/PopularLocalities";
 // import Testimonials from "@/components/section/Testimonials";
@@ -16,7 +16,8 @@ export default function Home() {
         <Header />
         <HeroSearch />
 
-        {/* <FeaturedRooms />
+        <FeaturedRooms />
+        {/*
         <HowItWorks />
         <PopularLocalities />
         <WhyChooseUs />

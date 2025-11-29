@@ -98,27 +98,6 @@
     repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(255, 255, 255, 0.1) 40px, rgba(255, 255, 255, 0.1) 41px);
 }
 
-.bg-line-pattern::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.1) 0%, transparent 30%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  mix-blend-mode: screen;
-  z-index: 10;
-}
-
-.bg-line-pattern:hover::before {
-  opacity: 1;
-}
-
-.bg-line-pattern:active::before {
-  background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.2) 0%, transparent 40%);
-  transition: none;
-}
-
 /* -------------------------------------------------
    Animation utilities – no Tailwind config needed
    ------------------------------------------------- */

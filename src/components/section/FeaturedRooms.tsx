@@ -44,7 +44,7 @@ export function RoomCard({
   image,
 }: RoomCardProps) {
   return (
-    <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+    <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer">
       {/* Image + Price Badge */}
       <div className="relative">
         <Image
@@ -59,7 +59,7 @@ export function RoomCard({
         {/* Price or Call Badge */}
         <div className="absolute top-3 right-3">
           {price ? (
-            <div className="bg-green-100/95 backdrop-blur-sm text-gray-700 font-bold text-lg px-4 py-2 rounded-full shadow-lg border border-gray-300">
+            <div className="bg-green-100/95 backdrop-blur-sm text-gray-900 font-bold text-lg px-4 py-2 rounded-full shadow-lg border border-gray-300">
               {price}/<span className="text-sm font-medium">mo</span>
             </div>
           ) : (
@@ -87,22 +87,22 @@ export function RoomCard({
       <div className="p-4">
         {/* Name + Location */}
         <div className="mb-3">
-          <h3 className="font-bold text-gray-100 text-lg line-clamp-1">{name}</h3>
-          <div className="flex items-center gap-1.5 text-gray-300 text-sm mt-1">
+          <h3 className="font-bold text-gray-900 text-lg line-clamp-1">{name}</h3>
+          <div className="flex items-center gap-1.5 text-gray-900 text-sm mt-1">
             <MapPin className="w-4 h-4" />
             <span className="opacity-80">{location}</span>
           </div>
         </div>
 
         {/* Middle Info - Compact */}
-        <div className="space-y-2 text-sm text-gray-200 mb-4">
+        <div className="space-y-2 text-sm text-gray-900 mb-4">
           <div className="flex justify-between">
             <span>Owner</span>
-            <span className="font-medium text-blue-100">{owner}</span>
+            <span className="font-medium text-blue-900">{owner}</span>
           </div>
           <div className="flex justify-between">
             <span>Posted</span>
-            <span className="text-gray-100">{postedDate}</span>
+            <span className="text-gray-900">{postedDate}</span>
           </div>
         </div>
 
@@ -117,7 +117,7 @@ export function RoomCard({
             </span>
           ))}
           {suitableFor.length > 3 && (
-            <span className="text-xs text-gray-500">+{suitableFor.length - 3}</span>
+            <span className="text-xs text-gray-900">+{suitableFor.length - 3}</span>
           )}
         </div>
       </div>
