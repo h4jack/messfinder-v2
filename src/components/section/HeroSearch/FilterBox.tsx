@@ -186,38 +186,6 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
                             </div>
                         </pincodeDropdown.FieldWrapper>
 
-                        <stateDropdown.DropdownWrapper>
-                            {["", ...pincodeLookup.getAllStates()].map((s) => (
-                                DropdownItem(s || "Select State", () => {
-                                    setFilters((prev) => {
-                                        if (prev.state !== s) {
-                                            // Reset district if state changes
-                                            return { ...prev, state: s, district: '' };
-                                        }
-                                        return { ...prev, state: s };
-                                    });
-                                    stateDropdown.closeDropdown();
-                                })
-                            ))}
-                        </stateDropdown.DropdownWrapper>
-
-                        <districtDropdown.DropdownWrapper>
-                            {["", ...pincodeLookup.getDistrictsByState(filters.state)].map((s) => (
-                                DropdownItem(s || "Select District", () => {
-                                    setFilters((prev) => ({ ...prev, district: s }));
-                                    districtDropdown.closeDropdown();
-                                })
-                            ))}
-                        </districtDropdown.DropdownWrapper>
-
-                        <pincodeDropdown.DropdownWrapper>
-                            {pincodeList.map((s) => (
-                                DropdownItem(s, () => {
-                                    setFilters((prev) => ({ ...prev, pincode: s }));
-                                    pincodeDropdown.closeDropdown();
-                                })
-                            ))}
-                        </pincodeDropdown.DropdownWrapper>
 
                         {/* Gender Filter */}
                         <div>
@@ -241,7 +209,38 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
                 </div >
             )}
 
+            <stateDropdown.DropdownWrapper>
+                {["", ...pincodeLookup.getAllStates()].map((s) => (
+                    DropdownItem(s || "Select State", () => {
+                        setFilters((prev) => {
+                            if (prev.state !== s) {
+                                // Reset district if state changes
+                                return { ...prev, state: s, district: '' };
+                            }
+                            return { ...prev, state: s };
+                        });
+                        stateDropdown.closeDropdown();
+                    })
+                ))}
+            </stateDropdown.DropdownWrapper>
 
+            <districtDropdown.DropdownWrapper>
+                {["", ...pincodeLookup.getDistrictsByState(filters.state)].map((s) => (
+                    DropdownItem(s || "Select District", () => {
+                        setFilters((prev) => ({ ...prev, district: s }));
+                        districtDropdown.closeDropdown();
+                    })
+                ))}
+            </districtDropdown.DropdownWrapper>
+
+            <pincodeDropdown.DropdownWrapper>
+                {pincodeList.map((s) => (
+                    DropdownItem(s, () => {
+                        setFilters((prev) => ({ ...prev, pincode: s }));
+                        pincodeDropdown.closeDropdown();
+                    })
+                ))}
+            </pincodeDropdown.DropdownWrapper>
 
         </>)
 }
