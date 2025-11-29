@@ -3,6 +3,8 @@
 
 import { useRef, useState, useCallback, useEffect, useId } from 'react';
 import ClickOutside from '@/components/ClickedOutside';
+import { CustomDropdown } from '@/components/ui/dropdown/CustomDropdown';
+import { createPortal } from 'react-dom';
 
 interface UseDropdownReturn {
     ref: React.RefObject<HTMLElement | undefined>;  // ← HTMLElement, not HTMLDivElement
@@ -11,6 +13,7 @@ interface UseDropdownReturn {
     openDropdown: () => void;
     closeDropdown: () => void;
     DropdownWrapper: React.FC<{ children: React.ReactNode }>;
+    FieldWrapper: React.FC<{ children: React.ReactNode }>;
 }
 
 export type { UseDropdownReturn };
@@ -18,6 +21,7 @@ export type { UseDropdownReturn };
 export function useDropdown() {
     // ← Use HTMLElement (div, button, input — all work)
     const ref = useRef<HTMLElement | undefined>(undefined);
+    const dropdownRef = useRef<HTMLDivElement | undefined>(undefined);
     const [open, setOpen] = useState(false);
 
     const toggle = useCallback((isOpen?: boolean) => {
@@ -43,13 +47,29 @@ export function useDropdown() {
         return () => window.removeEventListener('keydown', handleEscape);
     }, [open, closeDropdown]);
 
-    const DropdownWrapper: React.FC<{ children: React.ReactNode }> = useCallback(
+    const FieldWrapper: React.FC<{ children: React.ReactNode }> = useCallback(
         ({ children }) => (
-            <ClickOutside onClickOutside={closeDropdown} excludeRefs={[ref]}>
+            <ClickOutside onClickOutside={closeDropdown} excludeRefs={[ref, dropdownRef]}>
                 {children}
             </ClickOutside>
         ),
         [closeDropdown, ref]
+    );
+
+    const DropdownWrapper: React.FC<{ children: React.ReactNode }> = useCallback(
+        ({ children }) => (
+            createPortal((
+                <CustomDropdown
+                    targetRef={ref}
+                    dropdownRef={dropdownRef}
+                    visible={open}
+                    enableTypeAhead={false}
+                >
+                    {children}
+                </CustomDropdown>
+            ), document.body)
+        ),
+        [open, ref, dropdownRef]
     );
 
     return {
@@ -58,6 +78,7 @@ export function useDropdown() {
         toggle,
         openDropdown,
         closeDropdown,
+        FieldWrapper,
         DropdownWrapper,
     };
 }

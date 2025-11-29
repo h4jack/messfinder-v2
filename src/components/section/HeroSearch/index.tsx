@@ -5,29 +5,10 @@ import { useState } from 'react';
 import { X, Search, MapPin, Filter, Fullscreen, Minimize2 } from 'lucide-react';
 
 import { durgapurSearchKeywords } from '@/data/mockData';
-import { CustomDropdown } from '@/components/ui/dropdown/CustomDropdown';
 import { useDropdown } from '@/components/ui/dropdown/useDropdown';
 import { DropdownItem } from '@/components/ui/dropdown/DropdownItem';
 
 import FilterBox from './FilterBox';
-
-interface Filters {
-    state: string;
-    district: string;
-    pincode: string;
-    gender: 'All' | 'Male' | 'Female';
-}
-
-const renderDropdownItem = (item: string, onClick: () => void) => (
-    <div
-        key={item || 'empty'}
-        className="px-4 py-4 hover:bg-black/10 rounded-sm hover:text-white cursor-pointer whitespace-nowrap"
-        onMouseDown={onClick}
-    >
-        {item || "Select"}
-    </div>
-);
-
 
 export default function HeroSearch() {
     /** -------------------------------
@@ -60,11 +41,11 @@ export default function HeroSearch() {
 
     const [searchErrors, setSearchErrors] = useState("");
 
-    const [fullScreen, setFullScreen] = useState(true);
+    const [fullScreen, setFullScreen] = useState(false);
 
     return (
         <div className={"bg-gradient-to-br " + (fullScreen
-            ? "from-teal-900 to-cyan-900 fixed h-screen overflow-auto z-1000 w-full top-0 left-0"
+            ? "from-gray-900 to-gray-600 fixed h-screen overflow-auto z-1000 w-full top-0 left-0"
             : "from-teal-600 to-cyan-600 relative")}>
             <div className="bg-line-pattern bg-transparent w-full text-white h-full">
                 <button
@@ -86,7 +67,7 @@ export default function HeroSearch() {
 
                     {/* ---------------- Search Box ---------------- */}
                     <div className="w-full h-full md:w-2/3 mx-4 mt-6">
-                        <searchDropdown.DropdownWrapper>
+                        <searchDropdown.FieldWrapper>
                             <div
                                 ref={searchDropdown.ref as React.RefObject<HTMLDivElement>}
                                 className={`bg-white/80 z-20 backdrop-blur-sm p-4 w-full rounded-lg shadow-md text-gray-700 flex flex-col sm:flex-row items-end justify-center sm:items-center gap-2 relative transition-all
@@ -146,7 +127,7 @@ export default function HeroSearch() {
                                     </p>
                                 )}
                             </div>
-                        </searchDropdown.DropdownWrapper>
+                        </searchDropdown.FieldWrapper>
 
 
                         {/* ---------------- Filters Section ---------------- */}
@@ -160,20 +141,15 @@ export default function HeroSearch() {
 
                 {/* ---------------- Dropdown Portals ---------------- */}
 
-                {
-                    searchDropdown.open && (
-                        <searchDropdown.DropdownWrapper>
-                            <CustomDropdown targetRef={searchDropdown.ref} visible={searchDropdown.open} enableTypeAhead={false}>
-                                {durgapurSearchKeywords.map((keyword) => (
-                                    DropdownItem(keyword, () => {
-                                        setSearchText(keyword);
-                                        searchDropdown.closeDropdown();
-                                    })
-                                ))}
-                            </CustomDropdown>
-                        </searchDropdown.DropdownWrapper>
-                    )
-                }
+
+                <searchDropdown.DropdownWrapper>
+                    {durgapurSearchKeywords.map((keyword) => (
+                        DropdownItem(keyword, () => {
+                            setSearchText(keyword);
+                            searchDropdown.closeDropdown();
+                        })
+                    ))}
+                </searchDropdown.DropdownWrapper>
 
 
             </div >

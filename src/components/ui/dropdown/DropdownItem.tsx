@@ -6,7 +6,7 @@ export const DropdownItem = (
     <div
         key={item || 'empty'}
         className="px-4 py-4 cursor-pointer whitespace-nowrap"
-        onMouseDown={(e) => {
+        onClick={(e) => {
             e.preventDefault(); // prevent input blur
             onClick();
         }}

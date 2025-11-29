@@ -8,7 +8,6 @@ import React, {
     isValidElement,
     cloneElement,
 } from 'react';
-import { createPortal } from 'react-dom';
 
 interface CustomDropdownProps {
     children: React.ReactNode;
@@ -16,6 +15,7 @@ interface CustomDropdownProps {
     visible: boolean;
     onSelect?: (value: string) => void;
     enableTypeAhead?: boolean;
+    dropdownRef: React.RefObject<HTMLDivElement | undefined>;
 }
 
 export const CustomDropdown: React.FC<CustomDropdownProps> = ({
@@ -24,8 +24,8 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
     visible,
     onSelect,
     enableTypeAhead = true, // default: on
+    dropdownRef
 }) => {
-    const dropdownRef = useRef<HTMLDivElement | undefined>(null);
     const itemRefs = useRef<(HTMLDivElement | undefined)[]>([]);
     const [focusedIndex, setFocusedIndex] = useState(-1);
     const searchQuery = useRef('');
@@ -189,15 +189,14 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
 
     if (!visible) return null;
 
-    return createPortal(
+    return (
         <div
-            ref={dropdownRef}
+            ref={dropdownRef as React.RefObject<HTMLDivElement>}
             className="bg-teal-900/60 text-white backdrop-blur-xl border border-white/30 rounded-xl shadow-2xl p-1 max-h-80 overflow-y-auto"
             style={{ position: 'fixed', top: 0, left: 0 }}
             onClick={e => e.stopPropagation()}
         >
             {enhancedChildren}
-        </div>,
-        document.body
+        </div>
     );
 };

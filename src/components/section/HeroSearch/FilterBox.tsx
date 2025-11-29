@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 
 import { X, ChevronDown, Filter } from 'lucide-react';
 
-import { CustomDropdown } from '@/components/ui/dropdown/CustomDropdown';
 import { useDropdown } from '@/components/ui/dropdown/useDropdown';
 import { DropdownItem } from '@/components/ui/dropdown/DropdownItem';
 
@@ -83,101 +82,142 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         {/* State Dropdown */}
-                        <div ref={stateDropdown.ref}>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
-                            <button
-                                className={`group w-full h-12 px-4 bg-teal-50/30 rounded-xl flex items-center justify-between hover:bg-teal-50/10 focus:outline-none focus:ring-2 transition-all ${getInputClasses('state')}`}
-                                onClick={stateDropdown.toggle}>
-                                {filters.state || 'Select State'}
-                                <ChevronDown className="w-4 h-4 text-gray-500 group-focus:text-teal-700" />
-                            </button>
-                            {errors.state && (
-                                <p className={`mt-1 text-sm ${errors.state.includes("Warning") ? "text-orange-500" : "text-red-500"}`}>
-                                    {errors.state}
-                                </p>
-                            )}
-                        </div>
+                        <stateDropdown.FieldWrapper>
+
+                            <div ref={stateDropdown.ref as React.RefObject<HTMLDivElement>}>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
+                                <button
+                                    className={`group w-full h-12 px-4 bg-teal-50/30 rounded-xl flex items-center justify-between hover:bg-teal-50/10 focus:outline-none focus:ring-2 transition-all ${getInputClasses('state')}`}
+                                    onClick={() => {
+                                        stateDropdown.toggle()
+                                    }}>
+                                    {filters.state || 'Select State'}
+                                    <ChevronDown className="w-4 h-4 text-gray-500 group-focus:text-teal-700" />
+                                </button>
+                                {errors.state && (
+                                    <p className={`mt-1 text-sm ${errors.state.includes("Warning") ? "text-orange-500" : "text-red-500"}`}>
+                                        {errors.state}
+                                    </p>
+                                )}
+                            </div>
+                        </stateDropdown.FieldWrapper>
 
 
                         {/* ---------------- District Dropdown ---------------- */}
-                        <div ref={districtDropdown.ref}>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">District</label>
-                            <button
-                                disabled={!filters.state} // disable unless state selected
-                                className={`group w-full h-12 px-4 rounded-xl flex items-center justify-between transition-all 
-                                                    ${!filters.state ? 'bg-gray-300/60 opacity-50 text-gray-500 cursor-not-allowed' : 'bg-teal-50/30 hover:bg-teal-50/10 text-gray-700'} 
-                                                    ${getInputClasses('district')}`}
-                                onClick={districtDropdown.toggle}
-                            >
-                                {filters.district || 'Select District'}
-                                <ChevronDown className="w-4 h-4 text-gray-500 group-focus:text-teal-700" />
-                            </button>
-                            {errors.district && (
-                                <p className={`mt-1 text-sm ${errors.district.includes("Warning") ? "text-orange-500" : "text-red-500"}`}>
-                                    {errors.district}
-                                </p>
-                            )}
-                        </div>
+                        <districtDropdown.FieldWrapper>
+                            <div ref={districtDropdown.ref as React.RefObject<HTMLDivElement>}>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">District</label>
+                                <button
+                                    disabled={!filters.state} // disable unless state selected
+                                    className={`group w-full h-12 px-4 rounded-xl flex items-center justify-between transition-all 
+                                    ${!filters.state ? 'bg-gray-300/60 opacity-50 text-gray-500 cursor-not-allowed' : 'bg-teal-50/30 hover:bg-teal-50/10 text-gray-700'} 
+                                    ${getInputClasses('district')}`}
+                                    onClick={() => {
+                                        districtDropdown.toggle()
+                                    }}
+                                >
+                                    {filters.district || 'Select District'}
+                                    <ChevronDown className="w-4 h-4 text-gray-500 group-focus:text-teal-700" />
+                                </button>
+                                {errors.district && (
+                                    <p className={`mt-1 text-sm ${errors.district.includes("Warning") ? "text-orange-500" : "text-red-500"}`}>
+                                        {errors.district}
+                                    </p>
+                                )}
+                            </div>
+                        </districtDropdown.FieldWrapper>
 
                         {/* ---------------- Pincode Input ---------------- */}
-                        <div ref={pincodeDropdown.ref}>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Pincode</label>
-                            <span className='relative'>
+                        <pincodeDropdown.FieldWrapper>
+                            <div ref={pincodeDropdown.ref as React.RefObject<HTMLDivElement>}>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Pincode</label>
+                                <span className='relative'>
 
-                                <input
-                                    type="text"
-                                    value={filters.pincode}
-                                    placeholder="e.g. 713201, 713216"
-                                    className={`w-full h-12 pl-4 pr-10 rounded-xl placeholder-gray-400 focus:outline-none transition-all ${getInputClasses('pincode')}`}
-                                    onChange={(e) => {
-                                        let pincode = e.target.value.replace(/\D/g, '').slice(-6);
-                                        setFilters((prev) => ({ ...prev, pincode }));
+                                    <input
+                                        type="text"
+                                        value={filters.pincode}
+                                        placeholder="e.g. 713201, 713216"
+                                        className={`w-full h-12 pl-4 pr-10 rounded-xl placeholder-gray-400 focus:outline-none transition-all ${getInputClasses('pincode')}`}
+                                        onChange={(e) => {
+                                            let pincode = e.target.value.replace(/\D/g, '').slice(-6);
+                                            setFilters((prev) => ({ ...prev, pincode }));
 
-                                        if (pincode.length === 6 && pincodeLookup.isValidPincode(pincode)) {
-                                            const loc = pincodeLookup.findLocationByPincode(Number(pincode));
-                                            if (loc) {
-                                                setFilters((prev) => ({
-                                                    ...prev,
-                                                    state: loc.state,
-                                                    district: loc.district,
-                                                }));
-                                                setErrors((prev) => ({ ...prev, pincode: undefined, state: undefined, district: undefined }));
-                                            } else {
+                                            if (pincode.length === 6 && pincodeLookup.isValidPincode(pincode)) {
+                                                const loc = pincodeLookup.findLocationByPincode(Number(pincode));
+                                                if (loc) {
+                                                    setFilters((prev) => ({
+                                                        ...prev,
+                                                        state: loc.state,
+                                                        district: loc.district,
+                                                    }));
+                                                    setErrors((prev) => ({ ...prev, pincode: undefined, state: undefined, district: undefined }));
+                                                } else {
+                                                    setErrors((prev) => ({ ...prev, pincode: 'Invalid pincode' }));
+                                                }
+                                            } else if (pincode.length > 0 && pincode.length < 6) {
                                                 setErrors((prev) => ({ ...prev, pincode: 'Invalid pincode' }));
+                                            } else {
+                                                setErrors((prev) => ({ ...prev, pincode: undefined }));
                                             }
-                                        } else if (pincode.length > 0 && pincode.length < 6) {
-                                            setErrors((prev) => ({ ...prev, pincode: 'Invalid pincode' }));
-                                        } else {
-                                            setErrors((prev) => ({ ...prev, pincode: undefined }));
-                                        }
 
-                                        pincode ? pincodeDropdown.openDropdown() : pincodeDropdown.closeDropdown();
-                                    }}
-                                    onMouseDown={(e) => e.currentTarget.value.trim() && pincodeDropdown.openDropdown()}
-                                />
-
-                                {filters.pincode.length > 0 && (
-                                    <button
-                                        onClick={() => {
-                                            setFilters((prev) => ({ ...prev, pincode: "" }));
-                                            setErrors((prev) => ({ ...prev, pincode: undefined }));
-                                            pincodeDropdown.closeDropdown();
+                                            pincode ? pincodeDropdown.openDropdown() : pincodeDropdown.closeDropdown();
                                         }}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                                    >
-                                        <X className="w-5 h-5" />
-                                    </button>
+                                        onMouseDown={(e) => e.currentTarget.value.trim() && pincodeDropdown.openDropdown()}
+                                    />
+                                    {filters.pincode.length > 0 && (
+                                        <button
+                                            onClick={() => {
+                                                setFilters((prev) => ({ ...prev, pincode: "" }));
+                                                setErrors((prev) => ({ ...prev, pincode: undefined }));
+                                                pincodeDropdown.closeDropdown();
+                                            }}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                        >
+                                            <X className="w-5 h-5" />
+                                        </button>
+                                    )}
+                                </span>
+
+                                {errors.pincode && (
+                                    <p className={`mt-1 text-sm ${errors.pincode.includes("Warning") ? "text-orange-500" : "text-red-500"}`}>
+                                        {errors.pincode}
+                                    </p>
                                 )}
-                            </span>
+                            </div>
+                        </pincodeDropdown.FieldWrapper>
 
-                            {errors.pincode && (
-                                <p className={`mt-1 text-sm ${errors.pincode.includes("Warning") ? "text-orange-500" : "text-red-500"}`}>
-                                    {errors.pincode}
-                                </p>
-                            )}
-                        </div>
+                        <stateDropdown.DropdownWrapper>
+                            {["", ...pincodeLookup.getAllStates()].map((s) => (
+                                DropdownItem(s || "Select State", () => {
+                                    setFilters((prev) => {
+                                        if (prev.state !== s) {
+                                            // Reset district if state changes
+                                            return { ...prev, state: s, district: '' };
+                                        }
+                                        return { ...prev, state: s };
+                                    });
+                                    stateDropdown.closeDropdown();
+                                })
+                            ))}
+                        </stateDropdown.DropdownWrapper>
 
+                        <districtDropdown.DropdownWrapper>
+                            {["", ...pincodeLookup.getDistrictsByState(filters.state)].map((s) => (
+                                DropdownItem(s || "Select District", () => {
+                                    setFilters((prev) => ({ ...prev, district: s }));
+                                    districtDropdown.closeDropdown();
+                                })
+                            ))}
+                        </districtDropdown.DropdownWrapper>
 
+                        <pincodeDropdown.DropdownWrapper>
+                            {pincodeList.map((s) => (
+                                DropdownItem(s, () => {
+                                    setFilters((prev) => ({ ...prev, pincode: s }));
+                                    pincodeDropdown.closeDropdown();
+                                })
+                            ))}
+                        </pincodeDropdown.DropdownWrapper>
 
                         {/* Gender Filter */}
                         <div>
@@ -198,58 +238,10 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div >
             )}
-            {
-                stateDropdown.open && (
-                    <stateDropdown.DropdownWrapper>
-                        <CustomDropdown targetRef={stateDropdown.ref} visible={stateDropdown.open}>
-                            {["", ...pincodeLookup.getAllStates()].map((s) => (
-                                DropdownItem(s || "Select State", () => {
-                                    setFilters((prev) => {
-                                        if (prev.state !== s) {
-                                            // Reset district if state changes
-                                            return { ...prev, state: s, district: '' };
-                                        }
-                                        return { ...prev, state: s };
-                                    });
-                                    stateDropdown.closeDropdown();
-                                })
-                            ))}
-                        </CustomDropdown>
-                    </stateDropdown.DropdownWrapper>
-                )
-            }
 
-            {
-                districtDropdown.open && (
-                    <districtDropdown.DropdownWrapper>
-                        <CustomDropdown targetRef={districtDropdown.ref} visible={districtDropdown.open}>
-                            {["", ...pincodeLookup.getDistrictsByState(filters.state)].map((s) => (
-                                DropdownItem(s || "Select District", () => {
-                                    setFilters((prev) => ({ ...prev, district: s }));
-                                    districtDropdown.closeDropdown();
-                                })
-                            ))}
-                        </CustomDropdown>
-                    </districtDropdown.DropdownWrapper>
-                )
-            }
 
-            {
-                pincodeDropdown.open && (
-                    <pincodeDropdown.DropdownWrapper>
-                        <CustomDropdown targetRef={pincodeDropdown.ref} visible={pincodeDropdown.open} enableTypeAhead={false}>
-                            {pincodeList.map((s) => (
-                                DropdownItem(s, () => {
-                                    setFilters((prev) => ({ ...prev, pincode: s }));
-                                    pincodeDropdown.closeDropdown();
-                                })
-                            ))}
-                        </CustomDropdown>
-                    </pincodeDropdown.DropdownWrapper>
-                )
-            }
 
         </>)
 }
