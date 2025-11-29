@@ -188,7 +188,8 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
     }, [visible, targetRef]);
 
     if (!visible) return null;
-
+    // if (!targetRef.current) return null;
+    if(!items.length) return null;
     return (
         <div
             ref={dropdownRef as React.RefObject<HTMLDivElement>}
