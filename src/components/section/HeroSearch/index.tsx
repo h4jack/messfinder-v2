@@ -34,8 +34,15 @@ export default function HeroSearch() {
         }
     };
 
+    const getInputClasses = (error: string, noDefault: boolean) => {
+        if (noDefault) return "";
+        if (!error) return "focus:ring-2 focus:ring-teal-900/70 border-2 border-gray-700/40"; // default
 
-    const [searchErrors, setSearchErrors] = useState("");
+        const isWarning = error?.includes("Warning");
+        return "focus:ring-2 border-none" + (isWarning
+            ? "focus:ring-orange-500/70"
+            : "focus:ring-red-500/70");
+    };
 
     const [fullScreen, setFullScreen] = useState(false);
 
@@ -67,7 +74,7 @@ export default function HeroSearch() {
                             <div
                                 ref={searchDropdown.ref as React.RefObject<HTMLDivElement>}
                                 className={`bg-white/80 z-20 backdrop-blur-sm p-4 w-full rounded-lg shadow-md text-gray-700 flex flex-col sm:flex-row items-end justify-center sm:items-center gap-2 relative transition-all
-        ${searchDropdown.error ? 'border-2 border-red-500' : 'border-0'}`}
+        ${searchDropdown.error ? 'border-2 border-red-500' : 'border-0'} ${getInputClasses(searchDropdown.error, true)}`}
                             >
                                 <span className="relative flex w-full h-full gap-1 justify-center items-center">
                                     <MapPin className="w-6 h-6 text-gray-600" />
@@ -110,7 +117,13 @@ export default function HeroSearch() {
                                         <Filter className="w-5 h-5" />
                                     </button>
 
-                                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md flex items-center gap-2">
+                                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md flex items-center gap-2"
+                                        onClick={() => {
+                                            if (searchDropdown.value.trim().length === 0) {
+                                                searchDropdown.setError("Please enter a search term");
+                                                return;
+                                            }
+                                        }}>
                                         <Search className="w-4 h-4" />
                                         Search
                                     </button>

@@ -31,12 +31,12 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
     const pincodeList = ['123456', '722132', '234472', '722329', '732321', '722321', '422123', '622321'];
 
     const getInputClasses = (error: string) => {
-        if (error) return "focus:ring-teal-900/70 border-2 border-teal-900/40"; // default
+        if (!error) return "focus:ring-2 focus:ring-teal-900/70 border-2 border-gray-700/40"; // default
 
         const isWarning = error?.includes("Warning");
-        return isWarning
-            ? "border-2 border-orange-500 focus:ring-orange-500/70"
-            : "border-2 border-red-500 focus:ring-red-500/70";
+        return "focus:ring-2 border-none" + (isWarning
+            ? "focus:ring-orange-500/70"
+            : "focus:ring-red-500/70");
     };
 
     return (
@@ -51,16 +51,15 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         {/* State Dropdown */}
                         <stateDropdown.FieldWrapper>
-
                             <div ref={stateDropdown.ref as React.RefObject<HTMLDivElement>}>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
                                 <button
-                                    className={`group w-full h-12 px-4 bg-teal-50/30 rounded-xl flex items-center justify-between hover:bg-teal-50/10 focus:outline-none focus:ring-2 transition-all ${getInputClasses('state')}`}
+                                    className={`group w-full h-12 px-4 bg-teal-50/30 rounded-xl flex items-center justify-between hover:bg-teal-50/10 transition-all ${getInputClasses(stateDropdown.error)}`}
                                     onClick={() => {
                                         stateDropdown.toggle()
                                     }}>
                                     {stateDropdown.value || 'Select State'}
-                                    <ChevronDown className="w-4 h-4 text-gray-500 group-focus:text-teal-700" />
+                                    <ChevronDown className={`${stateDropdown.open ? "rotate-180" : ""} w-4 h-4 text-gray-500 group-focus:text-teal-700`} />
                                 </button>
                                 {stateDropdown.error && (
                                     <p className={`mt-1 text-sm ${stateDropdown.error.includes("Warning") ? "text-orange-500" : "text-red-500"}`}>
@@ -79,13 +78,13 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
                                     disabled={!stateDropdown.value} // disable unless state selected
                                     className={`group w-full h-12 px-4 rounded-xl flex items-center justify-between transition-all 
                                     ${!stateDropdown.value ? 'bg-gray-300/60 opacity-50 text-gray-500 cursor-not-allowed' : 'bg-teal-50/30 hover:bg-teal-50/10 text-gray-700'} 
-                                    ${getInputClasses('district')}`}
+                                    ${getInputClasses(districtDropdown.error)}`}
                                     onClick={() => {
                                         districtDropdown.toggle()
                                     }}
                                 >
                                     {districtDropdown.value || 'Select District'}
-                                    <ChevronDown className="w-4 h-4 text-gray-500 group-focus:text-teal-700" />
+                                    <ChevronDown className={`${districtDropdown.open ? "rotate-180" : ""} w-4 h-4 text-gray-500 group-focus:text-teal-700`} />
                                 </button>
                                 {districtDropdown.error && (
                                     <p className={`mt-1 text-sm ${districtDropdown.error.includes("Warning") ? "text-orange-500" : "text-red-500"}`}>
@@ -105,7 +104,7 @@ const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
                                         type="text"
                                         value={pincodeDropdown.value}
                                         placeholder="e.g. 713201, 713216"
-                                        className={`w-full h-12 pl-4 pr-10 rounded-xl placeholder-gray-400 focus:outline-none transition-all ${getInputClasses('pincode')}`}
+                                        className={`w-full h-12 pl-4 pr-10 rounded-xl placeholder-gray-400 transition-all ${getInputClasses(pincodeDropdown.error)}`}
                                         onChange={(e) => {
                                             let pincode = e.target.value.replace(/\D/g, '').slice(-6);
                                             pincodeDropdown.setValue(pincode);
