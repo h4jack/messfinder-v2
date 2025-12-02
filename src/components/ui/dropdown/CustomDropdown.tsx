@@ -193,7 +193,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
     return (
         <div
             ref={dropdownRef as React.RefObject<HTMLDivElement>}
-            className="bg-teal-900/60 text-white backdrop-blur-xl border border-white/30 rounded-xl shadow-2xl p-1 max-h-80 overflow-y-auto"
+            className="bg-teal-900/60 text-white backdrop-blur-xl border border-white/30 rounded-xl shadow-2xl p-1 max-h-80 overflow-y-auto select-none"
             style={{ position: 'fixed', top: 0, left: 0 }}
             onClick={e => e.stopPropagation()}
         >

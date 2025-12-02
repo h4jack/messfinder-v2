@@ -14,6 +14,10 @@ interface UseDropdownReturn {
     closeDropdown: () => void;
     DropdownWrapper: React.FC<{ children: React.ReactNode }>;
     FieldWrapper: React.FC<{ children: React.ReactNode }>;
+    value: string;
+    setValue: React.Dispatch<React.SetStateAction<string>>;
+    error: string;
+    setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export type { UseDropdownReturn };
@@ -23,6 +27,9 @@ export function useDropdown() {
     const ref = useRef<HTMLElement | undefined>(undefined);
     const dropdownRef = useRef<HTMLDivElement | undefined>(undefined);
     const [open, setOpen] = useState(false);
+
+    const [value, setValue] = useState('');
+    const [error, setError] = useState('');
 
     const toggle = useCallback((isOpen?: boolean) => {
         setOpen(prev => isOpen ?? !prev);
@@ -80,5 +87,9 @@ export function useDropdown() {
         closeDropdown,
         FieldWrapper,
         DropdownWrapper,
+        value,
+        setValue,
+        error,
+        setError,
     };
 }

@@ -16,10 +16,6 @@ export default function HeroSearch() {
      *  ------------------------------- */
     const searchDropdown = useDropdown();
 
-    /** -------------------------------
-     *  Form State
-     *  ------------------------------- */
-    const [searchText, setSearchText] = useState('');
 
     const [filtersExpanded, setFiltersExpanded] = useState(false);
     const [filterAnimating, setFilterAnimating] = useState(false);
@@ -71,7 +67,7 @@ export default function HeroSearch() {
                             <div
                                 ref={searchDropdown.ref as React.RefObject<HTMLDivElement>}
                                 className={`bg-white/80 z-20 backdrop-blur-sm p-4 w-full rounded-lg shadow-md text-gray-700 flex flex-col sm:flex-row items-end justify-center sm:items-center gap-2 relative transition-all
-        ${searchErrors ? 'border-2 border-red-500' : 'border-0'}`}
+        ${searchDropdown.error ? 'border-2 border-red-500' : 'border-0'}`}
                             >
                                 <span className="relative flex w-full h-full gap-1 justify-center items-center">
                                     <MapPin className="w-6 h-6 text-gray-600" />
@@ -80,16 +76,16 @@ export default function HeroSearch() {
                                         type="text"
                                         className="w-full h-full border-none outline-none bg-white/0 placeholder-gray-500 px-2 py-2 transition-all"
                                         placeholder="Enter name or location of PGs."
-                                        value={searchText}
+                                        value={searchDropdown.value}
                                         onChange={(e) => {
-                                            setSearchText(e.target.value);
+                                            searchDropdown.setValue(e.target.value);
 
                                             if (e.target.value.length > 0 && e.target.value.length < 3) {
-                                                setSearchErrors("Search term too short");
+                                                searchDropdown.setError("Search term too short");
                                             } else if (e.target.value.includes("test")) {
-                                                setSearchErrors("Warning: generic search term");
+                                                searchDropdown.setError("Warning: generic search term");
                                             } else {
-                                                setSearchErrors("");
+                                                searchDropdown.setError("");
                                             }
 
                                             e.target.value.trim() ? searchDropdown.openDropdown() : searchDropdown.closeDropdown();
@@ -97,12 +93,12 @@ export default function HeroSearch() {
                                         onMouseDown={(e) => e.currentTarget.value.trim() && searchDropdown.openDropdown()}
                                     />
 
-                                    {searchText && (
+                                    {searchDropdown.value && (
                                         <X
                                             className="w-6 h-6 text-gray-600 cursor-pointer"
                                             onClick={() => {
-                                                setSearchText("");
-                                                setSearchErrors("");
+                                                searchDropdown.setValue("");
+                                                searchDropdown.setError("");
                                                 searchDropdown.closeDropdown();
                                             }}
                                         />
@@ -121,9 +117,9 @@ export default function HeroSearch() {
                                 </span>
 
                                 {/* Search Error Message below the search box */}
-                                {searchErrors && (
-                                    <p className={`absolute -bottom-5 left-0 text-sm text-white px-2 rounded-sm ${searchErrors.includes("Warning") ? "bg-orange-500" : "bg-red-500"}`}>
-                                        {searchErrors}
+                                {searchDropdown.error && (
+                                    <p className={`absolute -bottom-5 left-0 text-sm text-white px-2 rounded-sm ${searchDropdown.error.includes("Warning") ? "bg-orange-500" : "bg-red-500"}`}>
+                                        {searchDropdown.error}
                                     </p>
                                 )}
                             </div>
@@ -133,7 +129,7 @@ export default function HeroSearch() {
                         {/* ---------------- Filters Section ---------------- */}
                         <div className={`filter-panel ${filtersExpanded ? 'expanded' : ''} ${filterAnimating ? 'closing' : ''}`}>
                             <FilterBox
-                                filtersExpanded={filtersExpanded}
+                                filtersExpanded={filtersExpanded as boolean}
                             />
                         </div>
                     </div>
@@ -145,7 +141,7 @@ export default function HeroSearch() {
                 <searchDropdown.DropdownWrapper>
                     {durgapurSearchKeywords.map((keyword) => (
                         DropdownItem(keyword, () => {
-                            setSearchText(keyword);
+                            searchDropdown.setValue(keyword);
                             searchDropdown.closeDropdown();
                         })
                     ))}
