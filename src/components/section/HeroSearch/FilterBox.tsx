@@ -10,15 +10,16 @@ import { DropdownItem } from '@/components/ui/dropdown/DropdownItem';
 import pincodeLookup from '@/utils/pincodeLookup';
 interface FilterBoxProps {
     filtersExpanded: boolean;
+    stateDropdown: ReturnType<typeof useDropdown>;
+    districtDropdown: ReturnType<typeof useDropdown>;
+    pincodeDropdown: ReturnType<typeof useDropdown>;
 }
 
-const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded }) => {
+const FilterBox: React.FC<FilterBoxProps> = ({ filtersExpanded, stateDropdown, districtDropdown, pincodeDropdown }) => {
     /** -------------------------------
      *  Refs
      *  ------------------------------- */
-    const stateDropdown = useDropdown();
-    const districtDropdown = useDropdown();
-    const pincodeDropdown = useDropdown();
+
 
     /** -------------------------------
      *  States

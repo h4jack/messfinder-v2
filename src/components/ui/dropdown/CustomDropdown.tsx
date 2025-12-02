@@ -9,6 +9,11 @@ import React, {
     cloneElement,
 } from 'react';
 
+export interface DDStyle {
+    type: 'light' | 'dark' | 'teal' | 'gray';
+    focusedStyle?: string;
+    isBlur?: boolean;
+}
 interface CustomDropdownProps {
     children: React.ReactNode;
     targetRef: React.RefObject<HTMLElement | undefined>;  // ← same type
@@ -16,7 +21,10 @@ interface CustomDropdownProps {
     onSelect?: (value: string) => void;
     enableTypeAhead?: boolean;
     dropdownRef: React.RefObject<HTMLDivElement | undefined>;
+    DDStyle?: DDStyle;
 }
+
+
 
 export const CustomDropdown: React.FC<CustomDropdownProps> = ({
     children,
@@ -24,7 +32,8 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
     visible,
     onSelect,
     enableTypeAhead = true, // default: on
-    dropdownRef
+    dropdownRef,
+    DDStyle = { type: 'dark', isBlur: true },
 }) => {
     const itemRefs = useRef<(HTMLDivElement | undefined)[]>([]);
     const [focusedIndex, setFocusedIndex] = useState(-1);
@@ -32,6 +41,30 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
     const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
     const items = React.Children.toArray(children).filter(Boolean) as React.ReactElement[];
+
+    // --- Dropdown Style System -------------------------------------
+
+    // Better variable names
+    const DROPDOWN_THEMES = {
+        dark: "bg-neutral-900/80 text-white shadow-xl border border-white/10",
+        gray: "bg-gray-800/70 text-white shadow-xl border border-white/10",
+        teal: "bg-teal-900/70 text-teal-50 shadow-xl border border-white/10",
+        light: "bg-white/90 text-neutral-900 shadow-xl border border-black/10",
+    };
+
+    // Focused option style (visually strong, accessible)
+    const DROPDOWN_ITEM_FOCUSED = "bg-black/20 text-white ring-2 ring-gray-300/20 rounded-sm";
+
+    const BORDER_STYLE = "border border-white/30 rounded-md shadow-2xl"
+    // Blur background if enabled
+    const BACKDROP_BLUR = "backdrop-blur-md";
+
+    // Compute final dropdown container style
+    const dropdownThemeClass = BORDER_STYLE + ' ' + ((DDStyle && DROPDOWN_THEMES[DDStyle.type])
+        ? `${DDStyle.isBlur ? BACKDROP_BLUR : ''} ${DROPDOWN_THEMES[DDStyle.type]}`
+        : `${BACKDROP_BLUR} ${DROPDOWN_THEMES.dark}`);
+
+
 
     useEffect(() => {
         if (visible) {
@@ -136,8 +169,8 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
         return cloneElement(child, {
             ref: (el: HTMLDivElement | null) => (itemRefs.current[index] = el),
             className: `${child.props.className || ''
-                } px-6 py-3 cursor-pointer transition-colors select-none ${isFocused
-                    ? 'ring-teal-300/70 ring-2 rounded-sm text-white font-medium bg-teal-700/90'
+                } px-6 py-3 cursor-pointer transition-all ${isFocused
+                    ? DROPDOWN_ITEM_FOCUSED
                     : 'hover:bg-white/20'
                 }`,
             onMouseEnter: () => setFocusedIndex(index),
@@ -187,13 +220,16 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
         };
     }, [visible, targetRef]);
 
+
+
+
     if (!visible) return null;
     // if (!targetRef.current) return null;
-    if(!items.length) return null;
+    if (!items.length) return null;
     return (
         <div
             ref={dropdownRef as React.RefObject<HTMLDivElement>}
-            className="bg-teal-900/60 text-white backdrop-blur-xl border border-white/30 rounded-xl shadow-2xl p-1 max-h-80 overflow-y-auto select-none"
+            className={`${dropdownThemeClass} p-1 max-h-80 overflow-y-auto select-none`}
             style={{ position: 'fixed', top: 0, left: 0 }}
             onClick={e => e.stopPropagation()}
         >

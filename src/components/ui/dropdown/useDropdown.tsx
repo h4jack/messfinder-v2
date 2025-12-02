@@ -3,7 +3,7 @@
 
 import { useRef, useState, useCallback, useEffect, useId } from 'react';
 import ClickOutside from '@/components/ClickedOutside';
-import { CustomDropdown } from '@/components/ui/dropdown/CustomDropdown';
+import { CustomDropdown, DDStyle } from '@/components/ui/dropdown/CustomDropdown';
 import { createPortal } from 'react-dom';
 
 interface UseDropdownReturn {
@@ -22,7 +22,7 @@ interface UseDropdownReturn {
 
 export type { UseDropdownReturn };
 
-export function useDropdown() {
+export function useDropdown(DDStyle?: DDStyle) {
     // ← Use HTMLElement (div, button, input — all work)
     const ref = useRef<HTMLElement | undefined>(undefined);
     const dropdownRef = useRef<HTMLDivElement | undefined>(undefined);
@@ -71,6 +71,7 @@ export function useDropdown() {
                     dropdownRef={dropdownRef}
                     visible={open}
                     enableTypeAhead={false}
+                    DDStyle={DDStyle}
                 >
                     {children}
                 </CustomDropdown>

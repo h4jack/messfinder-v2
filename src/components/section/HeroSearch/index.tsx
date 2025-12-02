@@ -9,12 +9,20 @@ import { useDropdown } from '@/components/ui/dropdown/useDropdown';
 import { DropdownItem } from '@/components/ui/dropdown/DropdownItem';
 
 import FilterBox from './FilterBox';
+import { DDStyle } from '@/components/ui/dropdown/CustomDropdown';
 
 export default function HeroSearch() {
+
+    const [fullScreen, setFullScreen] = useState(false);
+
     /** -------------------------------
      *  Refs
      *  ------------------------------- */
-    const searchDropdown = useDropdown();
+    const defaultDDStyle: DDStyle = fullScreen ? { type: 'gray', isBlur: true } : { type: 'teal', isBlur: true };
+    const searchDropdown = useDropdown(defaultDDStyle);
+    const stateDropdown = useDropdown(defaultDDStyle);
+    const districtDropdown = useDropdown(defaultDDStyle);
+    const pincodeDropdown = useDropdown(defaultDDStyle);
 
 
     const [filtersExpanded, setFiltersExpanded] = useState(false);
@@ -44,7 +52,7 @@ export default function HeroSearch() {
             : "focus:ring-red-500/70");
     };
 
-    const [fullScreen, setFullScreen] = useState(false);
+
 
     return (
         <div className={"bg-gradient-to-br " + (fullScreen
@@ -113,7 +121,10 @@ export default function HeroSearch() {
                                 </span>
 
                                 <span className='flex h-full justify-center items-center'>
-                                    <button className="text-gray-600 px-2" onClick={toggleFilters}>
+                                    <button className="text-gray-600 px-2" onClick={() => {
+                                        toggleFilters();
+                                        searchDropdown.closeDropdown()
+                                    }}>
                                         <Filter className="w-5 h-5" />
                                     </button>
 
@@ -123,6 +134,7 @@ export default function HeroSearch() {
                                                 searchDropdown.setError("Please enter a search term");
                                                 return;
                                             }
+                                            searchDropdown.closeDropdown();
                                         }}>
                                         <Search className="w-4 h-4" />
                                         Search
@@ -142,7 +154,10 @@ export default function HeroSearch() {
                         {/* ---------------- Filters Section ---------------- */}
                         <div className={`filter-panel ${filtersExpanded ? 'expanded' : ''} ${filterAnimating ? 'closing' : ''}`}>
                             <FilterBox
-                                filtersExpanded={filtersExpanded as boolean}
+                                filtersExpanded={filtersExpanded}
+                                stateDropdown={stateDropdown}
+                                districtDropdown={districtDropdown}
+                                pincodeDropdown={pincodeDropdown}
                             />
                         </div>
                     </div>
