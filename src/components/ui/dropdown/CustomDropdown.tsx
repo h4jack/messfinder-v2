@@ -53,7 +53,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
     };
 
     // Focused option style (visually strong, accessible)
-    const DROPDOWN_ITEM_FOCUSED = "bg-black/20 text-white ring-2 ring-gray-300/20 rounded-sm";
+    const DROPDOWN_ITEM_FOCUSED = `${DDStyle.type == "light" ? "text-black" : "text-white"} bg-black/20 ring-2 ring-gray-300/20 rounded-sm`;
 
     const BORDER_STYLE = "border border-white/30 rounded-md shadow-2xl"
     // Blur background if enabled
