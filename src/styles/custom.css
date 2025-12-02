@@ -1,0 +1,212 @@
+/* ====== CUSTOM UTILITIES ====== */
+@layer utilities {
+
+  /* ====== FLEX & LAYOUT ====== */
+  ._flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  ._flex-col {
+    @apply flex flex-col;
+  }
+
+  ._flex-col-center {
+    @apply flex flex-col justify-center items-center;
+  }
+
+  ._flex-between {
+    @apply flex justify-between items-center;
+  }
+
+  ._flex-around {
+    @apply flex justify-around items-center;
+  }
+
+  ._grid-center {
+    @apply grid place-items-center;
+  }
+
+  ._hw-full {
+    @apply h-full w-full;
+  }
+
+  ._page-center {
+    @apply flex justify-center items-center min-h-screen;
+  }
+
+  /* ====== TEXT & TYPOGRAPHY ====== */
+  ._text-center-bold {
+    @apply text-center font-bold;
+  }
+
+  ._text-muted {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+
+  ._heading-lg {
+    @apply text-2xl font-semibold;
+  }
+
+  ._heading-xl {
+    @apply text-3xl font-bold;
+  }
+
+  /* ====== PADDING & MARGIN ====== */
+  ._p-md {
+    @apply p-4;
+  }
+
+  ._m-auto {
+    @apply m-auto;
+  }
+
+  ._p-card {
+    @apply p-6 rounded-2xl shadow-md bg-white dark:bg-gray-800;
+  }
+
+  /* ====== BUTTON STYLES ====== */
+  ._btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors;
+  }
+
+  ._btn-primary {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700;
+  }
+
+  ._btn-outline {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors border border-gray-300 text-gray-700 hover:bg-gray-100;
+  }
+
+  /* ====== INPUT & FORM ====== */
+  ._input {
+    @apply border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
+
+  /* ====== CARD & CONTAINERS ====== */
+  ._card {
+    @apply bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4;
+  }
+
+  ._card-center {
+    @apply bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4 flex flex-col justify-center items-center text-center;
+  }
+}
+
+.bg-line-pattern {
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255, 255, 255, 0.2) 40px, rgba(255, 255, 255, 0.2) 41px),
+    repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(255, 255, 255, 0.1) 40px, rgba(255, 255, 255, 0.1) 41px);
+}
+
+/* -------------------------------------------------
+   Animation utilities – no Tailwind config needed
+   ------------------------------------------------- */
+
+/* 1. Expand / collapse panel (top → bottom) */
+.expand-panel {
+  overflow: hidden;
+  transition: max-height 0.5s ease-out, opacity 0.4s ease-out;
+}
+
+.expand-panel[aria-expanded="false"] {
+  max-height: 0;
+  opacity: 0;
+}
+
+.expand-panel[aria-expanded="true"] {
+  max-height: 500px;
+  /* any value larger than the panel height */
+  opacity: 1;
+}
+
+/* 2. Fade-in + slide-in from top (used for the advanced panel) */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-slide-in {
+  animation: fadeSlideIn 0.4s ease-out forwards;
+}
+
+/* 3. Shine effect (the moving gradient you already had) */
+@keyframes shine {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.shine {
+  position: relative;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent);
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+}
+
+/* 4. Suggestions dropdown slide-in */
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestions {
+  animation: slideInDown 0.2s ease-out forwards;
+}
+
+/* 5. Error message fade-in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.error-msg {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.filter-panel {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: transform 0.3s ease, max-height 0.3s ease, opacity 0.3s ease;
+    transform: translateY(-100px) rotate(10deg);
+    z-index: 10;
+    
+}
+
+.filter-panel.expanded {
+    max-height: 600px; /* adjust to your content */
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.filter-panel.closing {
+    max-height: 0;
+    transform: translateY(-100px) rotate(-10deg);
+    opacity: 0;
+}

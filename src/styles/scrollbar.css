@@ -1,0 +1,12 @@
+/* ==== SCROLLBAR STYLE ==== */
+::-webkit-scrollbar {
+    @apply w-2;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-[var(--color-secondary)] rounded-sm;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-[var(--color-text)];
+}

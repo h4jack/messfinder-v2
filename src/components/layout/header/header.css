@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+
+.btn-login,
+.btn-register {
+    @apply block text-center px-5 py-2 rounded-full font-medium hover:bg-teal-200 hover:shadow-md transition-all duration-200;
+}
+
+.btn-register {
+    @apply bg-teal-100 text-teal-700 hover:bg-teal-200;
+}
+
+.btn-login {
+    @apply bg-teal-600 text-white hover:bg-teal-700;
+}
+
+.btn-login.full,
+.btn-register.full {
+    @apply w-full;
+}
+
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-in {
+    animation: slideInFromTop 0.3s ease-out forwards;
+}
